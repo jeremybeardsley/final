@@ -1,15 +1,11 @@
-
-
-
-
-
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -23,14 +19,15 @@ import javax.swing.JLabel;
 
 
 
-public class nflFlightsApplet extends JApplet {
+public class nflFlightsApplet extends JApplet implements ActionListener {
 
 	 static int[][] adj = new int[30][30];
 	 static ArrayList<City> cities = new ArrayList<City>();
 	 private static JFrame frame; 
 	 static MediaTracker tr;
 	 static Image img;
-	 
+	 Graphics gr;
+	 JComboBox StartComboBox, comboBox_1;
 	   
            
 
@@ -56,18 +53,20 @@ public class nflFlightsApplet extends JApplet {
        JLabel lblStartingCity = new JLabel("Starting City");
        frame.getContentPane().add(lblStartingCity);
        
-       JComboBox StartComboBox = new JComboBox(cityLabels);
+       StartComboBox = new JComboBox(cityLabels);
        frame.getContentPane().add(StartComboBox);
        
        JLabel lblEndingCity = new JLabel("Ending City");
        frame.getContentPane().add(lblEndingCity);
        
-       JComboBox comboBox_1 = new JComboBox(cityLabels);
+       comboBox_1 = new JComboBox(cityLabels);
        frame.getContentPane().add(comboBox_1);
        
        
        
        JButton btnFindRoute = new JButton("Find Route");
+       btnFindRoute.addActionListener(this);
+       
        frame.getContentPane().add(btnFindRoute);
        MyComponent myComponent = new MyComponent();
        myComponent.setOpaque(true);
@@ -158,7 +157,7 @@ public class nflFlightsApplet extends JApplet {
 		       
 		   @Override
 		   public void paintComponent(Graphics g) {
-
+			   	gr = g;
 		       tr = new MediaTracker(this);
 				img = getImage(getCodeBase(),"map.gif");
 				tr.addImage(img, 0);
@@ -195,4 +194,16 @@ public class nflFlightsApplet extends JApplet {
 		       
 
 		   }}
+@Override
+public void actionPerformed(ActionEvent arg0) {
+	int [] previous = findPath.findPath(cities, adj, StartComboBox.getSelectedIndex(), comboBox_1.getSelectedIndex());
+	
+	String tester = "";
+	for (int i=0; i<30; i++)
+	{
+		tester += previous[i]+ ", ";
+	}
+		gr.drawString(tester, 50, 600);
+
+}
 }
