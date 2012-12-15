@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -26,10 +27,10 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
 	 private static JFrame frame; 
 	 static MediaTracker tr;
 	 static Image img;
+	 static String tester = "";
 	 Graphics gr;
 	 JComboBox StartComboBox, comboBox_1;
-	   
-           
+	 JLabel output;    
 
 	public nflFlightsApplet() throws IOException {
 		cities = buildArray();
@@ -72,7 +73,8 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
        myComponent.setOpaque(true);
        
        frame.getContentPane().add(myComponent);
-       
+       output = new JLabel();
+       frame.getContentPane().add(output);
        frame.setVisible(true);
       
 	}
@@ -189,6 +191,7 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
 		           int y = cities.get(i).getY() - 5;
 		           g.fillOval(x, y, 10, 10);
 		       }
+		       
 //
 //		       g.setColor(Color.BLACK);
 		       
@@ -196,14 +199,13 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
 		   }}
 @Override
 public void actionPerformed(ActionEvent arg0) {
-	int [] previous = findPath.findPath(cities, adj, StartComboBox.getSelectedIndex(), comboBox_1.getSelectedIndex());
-	
-	String tester = "";
-	for (int i=0; i<30; i++)
-	{
-		tester += previous[i]+ ", ";
-	}
-		gr.drawString(tester, 50, 600);
-
+	//int [] previous = findPath.findPath(cities, adj, StartComboBox.getSelectedIndex(), comboBox_1.getSelectedIndex());
+	Dijkstra.computePaths(cities.get(StartComboBox.getSelectedIndex()), adj, cities);
+	List<City> path = Dijkstra.getShortestPathTo(cities.get(comboBox_1.getSelectedIndex()));
+	tester = "";
+	for(int i = 0; i < path.size(); i++)
+		tester += path.get(i).getName() + ", ";
+	output.setText("");
+	output.setText(tester);
 }
 }
