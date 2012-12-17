@@ -7,6 +7,8 @@ import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
 	JLabel output;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public nflFlightsApplet() throws IOException {
+	public nflFlightsApplet()  {
 		// Calls buildArray which populates the list of cities
 		cities = buildArray();
 		// iterates through array of cities, retrieves the
@@ -211,7 +213,15 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
 			//code inserts image of map
 			gr = g;
 			tr = new MediaTracker(this);
-			img = getImage(getCodeBase(), "map.gif");
+			
+			URL imageURL = null;
+			try {
+				imageURL = new URL("http://jeremybeardsley.co/images/map.gif");
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			img = getImage(imageURL, "map.gif");
 			tr.addImage(img, 0);
 			g.drawImage(img, 0, 0, this);
 
@@ -253,7 +263,8 @@ public class nflFlightsApplet extends JApplet implements ActionListener {
 	@Override
 	//Action listener for button, this is where magic happens and the 
 	//starting city and destination city are passed to the dijkstra 
-	//class to find shortest distance
+	//class to find shortest distance.  Outputs path to List named
+	//path.  This list is then read to get city names. 
 	public void actionPerformed(ActionEvent arg0) {
 
 		Dijkstra.computePaths(cities.get(StartComboBox.getSelectedIndex()),
