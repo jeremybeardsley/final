@@ -1,2 +1,3 @@
-final
-=====
+This was a final project for CS253 (Data Structures) at CCSU, and was submitted by Jeremy Beardsley and Nick Marino.
+
+The assignment was to implement any graphing algorithm and apply it to a problem (either existing or made up). The assignment was to be written in Java, and we chose to add a Swing UI to the application. We implemented Dijkstra's algorithm against a modified traveling salesman problem. We mapped out the thirty US cities that are flight hubs for NLF football teams, and created mock flight paths.  By using a perfectly scaled map, we were able to calculate the shortest routes between cities using distance in pixels between cities.
